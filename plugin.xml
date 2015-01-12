@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<!-- plugin.xml file written by dynaTrace Client 5.6.0 -->
+<plugin>
+  <extension point="com.dynatrace.diagnostics.pdk.pluginconfig" id="com.dynatrace.diagnostics.plugins.jmx" name="Weblogic Monitoring">
+    <information>
+      <category value="" />
+      <displayname value="Weblogic Monitoring" />
+      <description value="Weblogic Monitoring Plugin" />
+      <supportlevel value="unsupported" />
+    </information>
+    <configuration>
+      <property key="threadCount" label="Weblogic Monitoring Thread Count" type="string" description="How many threads to use when monitoring the domain. 1 to 10." default="10" multiline="false" />
+      <property key="metricTimeOut" label="Metric Timeout" type="string" description="How long do you want to wait for data to come back from the server? This value is in ms." default="5000" multiline="false" />
+      <property key="Environment" label="Environment" type="string" description="Name of the Environment." default="" multiline="false" />
+      <property key="dtServer" label="Weblogic Server" type="string" description="Weblogic Admin Server DNS or IP" default="" multiline="false" />
+      <property key="jmxPort" label="Weblogic Port" type="string" description="Port For the Admin Server" default="" multiline="false" />
+      <property key="JmxUserName" label="Weblogic User Name" type="string" description="Weblogic user with Admin rights (if you want to get message age with JMS)" default="default" multiline="false" />
+      <property key="JmxPassword" label="Weblogic Password" type="password" description="Password for the Weblogic user" default="" />
+      <property key="systemProfile" label="System Profile" type="string" description="System profile where JMX metrics will be taken from" default="" multiline="false" />
+      <property key="metrics" label="Metrics" type="string" description="List of semicolon separated metrics" default="" multiline="false" />
+      <property key="agentGroups" label="Agent Groups" type="string" description="List of semicolon separated agent groups" default="" multiline="false" />
+      <property key="adminName" label="Admin Server Name" type="string" description="Place the Admin Server Name Here." default="default" multiline="false" />
+      <property key="JVM" label="Monitor JVM" type="boolean" description="This works with Jrocket or Sun JVMs.&#xD;&#xA;&#xD;&#xA;Other JVMs don't expose MBean data to Weblogic." default="true" />
+      <property key="Threads" label="Monitor Threads" type="boolean" description="My property description ..." default="true" />
+      <property key="WLServer" label="Monitor Server" type="boolean" description="My property description ..." default="true" />
+      <property key="Cluster" label="Monitor Cluster" type="boolean" description="My property description ..." default="true" />
+      <property key="Transaction" label="Monitor Transaction" type="boolean" description="My property description ..." default="true" />
+      <property key="FileStore" label="Monitor FileStore" type="boolean" description="My property description ..." default="true" />
+      <property key="JMS" label="Monitor JMS" type="boolean" description="My property description ..." default="true" />
+      <property key="ApplicationData" label="Monitor ApplicationData" type="boolean" description="Web App Component monitoring from the applications selected to monitor." default="true" />
+      <property key="EJBData" label="EJB Monitoring" type="boolean" description="Will monitor all EJBs found from the applications selected to monitor." default="true" />
+      <property key="ApplicationState" label="Monitor ApplicationState" type="boolean" description="My property description ..." default="true" />
+      <property key="JDBC" label="Monitor JDBC" type="boolean" description="My property description ..." default="true" />
+      <property key="AppDataMonitor" label="Application Data To Monitor" type="string" description="List Applications you want to collect data on.&#xD;&#xA;-Session Data" default="default" multiline="true" />
+      <property key="AppStateMonitor" label="Application State To Monitor" type="string" description="List Applications you want to collect state on.&#xD;&#xA;&#xD;&#xA;This will give you all the components states as well." default="default" multiline="true" />
+      <property key="safAgents" label="Store-And-Forward Agents" type="string" description="If you have SAF Agents, list them here. I agent per line." default="None" multiline="true" />
+      <property key="serverDeploy" label="Single Server Application Deploy" type="string" description=" List the server and application you want to validate the deployed. If a deployment fails, it is not listed in the Mbean tree. This will catch that.&#xD;&#xA;&#xD;&#xA;Make sure it is listed in the Application State To Monitor.&#xD;&#xA;&#xD;&#xA;For example:&#xD;&#xA;ServerName&#xD;&#xA;Application name" default="Server Name&#xD;&#xA;Application Name" multiline="true" />
+      <property key="jmsMods" label="JMS Mods" type="string" description="List the JMS Mods you don't want to monitor." default="None" multiline="true" />
+      <property key="jmsQueues" label="JMS Queues" type="string" description="List any queues you don't want to monitor. If you excluded the Mod, you don't have to put the queues in here." default="default" multiline="true" />
+      <property key="EJBDataMonitor" label="EJB Monitor" type="string" description="From the applications being monitored, list the EJBs you would like to monitor.&#xD;&#xA;" default="none" multiline="true" />
+    </configuration>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitor" id="com.dynatrace.diagnostics.plugins.jmx.monitor" name="Weblogic Monitor">
+    <plugin configid="com.dynatrace.diagnostics.plugins.jmx" class="com.dynatrace.diagnostics.plugins.jmx.WeblogicMonitoring" />
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicConnection" name="Weblogic Connection Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Connection Status" unit="number" description="If we can connect to the Admin Server&#xD;&#xA;&#xD;&#xA;Failed Connection = 0&#xD;&#xA;Successful Connection = 1" />
+      <metric defaultrate="purepath" name="Weblogic Monitor Time" unit="number" description="Time taken to monitor the domain." />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicThreadGroup" name="Weblogic Thread Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Execute Thread Idle Counts" unit="number" description="Execute Thread Idle Counts" />
+      <metric defaultrate="purepath" name="Hogging Thread Counts" unit="number" description="Hogging Thread Counts" />
+      <metric defaultrate="purepath" name="Queue Lengths" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Standby Thread Counts" unit="number" description="Standby Thread Counts" />
+      <metric defaultrate="purepath" name="Thread Health" unit="number" description="Health &#xD;&#xA;0 = Healthy&#xD;&#xA;1 = Not Healthy" />
+      <metric defaultrate="purepath" name="Completed Request Count" unit="number" description="Completed Request Count" />
+      <metric defaultrate="purepath" name="Present Throughput" unit="number" description="Present Throughput" />
+      <metric defaultrate="purepath" name="Execute Thread Total Counts" unit="number" description="Execute Thread Total Counts" />
+      <metric defaultrate="purepath" name="Workmanager Thread Usage" unit="number" description="Workmanager Thread Usage&#xD;&#xA;&#xD;&#xA;AppName &#xD;&#xA;Mod Name&#xD;&#xA;Thread Usage" />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicServerGroup" name="Weblogic Server Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Open Sockets" unit="number" description="Total open sockets to the server" />
+      <metric defaultrate="purepath" name="Server Health" unit="number" description="Health State of the server.&#xD;&#xA;0 = healthy&#xD;&#xA;1 = There is a problem" />
+      <metric defaultrate="purepath" name="Listen Address" unit="number" description="This validates the Managed Server is talking to the Admin Server&#xD;&#xA;0 = It is Good&#xD;&#xA;1 = There is a Problem" />
+      <metric defaultrate="purepath" name="Server Count" unit="number" description="Use this to verify all servers are running in the domain. This should equal all Managed Servers and the Admin Server count." />
+      <metric defaultrate="purepath" name="Server Running State" unit="number" description="Verify the server is in Running State&#xD;&#xA;0 = In Running State&#xD;&#xA;1 = Not in Running State" />
+      <metric defaultrate="purepath" name="Server Running Time" unit="number" description="How long the server has been running (in minutes)" />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicJDBCGroup" name="Weblogic JDBC Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Active Connections High" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Leaked Connection" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Current Capacity" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Current Capacity High" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Connection Delay Time" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Prep Stmt Cache Hit" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Prep Stmt Cache Miss" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Prep Stmt Cache Delete" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="JDBC State" unit="number" description="0 = Running&#xD;&#xA;1 = Not Running" />
+      <metric defaultrate="purepath" name="Active Connections Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Failed Reserve Request" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Failures To Reconnect" unit="number" description="My metric description ..." />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicClusterGroup" name="Weblogic Cluster Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Multicast Messages Lost" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Alive Server Count" unit="number" description="How many servers are in the cluster." />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicTransactionGroup" name="Weblogic Transaction Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Active Transactions Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction Committed Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction Heuristics Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction RolledBack App Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction RolledBack Resource Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction RolledBack System Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction RolledBack Timeout Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction RolledBack Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transaction Abandoned Total" unit="number" description="My metric description ..." />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicFileStoreGroup" name="Weblogic FileStore Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Create Count" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Delete Count" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Physical Write Count" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Read Count" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Update Count" unit="number" description="My metric description ..." />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicJMSGroup" name="Weblogic JMS Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Messages Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Messages Pending" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Messages High" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Messages Received" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Consumers Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Oldest Message Age" unit="number" description="FIFO" />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicJVMGroup" name="Weblogic JVM Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Heap Size Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Heap Free Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Heap Used Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Number Of Processors" unit="number" description="This value will not be recorded if the JVM does not expose it to Weblogic. JRocket normally exposes this." />
+      <metric defaultrate="purepath" name="All Processors Average Load" unit="number" description="This value will not be recorded if the JVM does not expose it to Weblogic. JRocket normally exposes this." />
+      <metric defaultrate="purepath" name="Total Garbage Collection Count" unit="number" description="This value will not be recorded if the JVM does not expose it to Weblogic. JRocket normally exposes this." />
+      <metric defaultrate="purepath" name="Total Garbage Collection Time" unit="number" description="This value will not be recorded if the JVM does not expose it to Weblogic. JRocket normally exposes this." />
+      <metric defaultrate="purepath" name="JVM Processor Load" unit="number" description="This value will not be recorded if the JVM does not expose it to Weblogic. JRocket normally exposes this." />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicApplicationDataGroup" name="Weblogic Application Data Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Open Sessions Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Open Sessions High" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Sessions Opened Total" unit="number" description="My metric description ..." />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicApplicationStateGroup" name="Weblogic Application State Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Application Health" unit="number" description="0 = Healthy&#xD;&#xA;1 = Not Healthy" />
+      <metric defaultrate="purepath" name="Application Run State" unit="number" description="Activated = 2&#xD;&#xA;New = 3&#xD;&#xA;Prepared = 1&#xD;&#xA;Unprepared = 0&#xD;&#xA;Failed = Any other number" />
+      <metric defaultrate="purepath" name="Application Deployed Single State" unit="number" description="0 = deployed&#xD;&#xA;1 - There is an issue.&#xD;&#xA;&#xD;&#xA;Used to make sure the required resources are deployed to the servers." />
+    </metricgroup>
+  </extension>
+  <extension point="com.dynatrace.diagnostics.pdk.monitormetricgroup" id="com.dynatrace.diagnostics.plugins.jmx.monitor.WeblogicEJBDataGroup" name="Weblogic EJB Data Group">
+    <metricgroup monitorid="com.dynatrace.diagnostics.plugins.jmx.monitor">
+      <metric defaultrate="purepath" name="Transactions Committed Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transactions RolledBack Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Transactions TimedOut Total" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Beans In Use Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Pooled Beans Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Waiter Current" unit="number" description="My metric description ..." />
+      <metric defaultrate="purepath" name="Timeout Total" unit="number" description="My metric description ..." />
+    </metricgroup>
+  </extension>
+</plugin>
+
