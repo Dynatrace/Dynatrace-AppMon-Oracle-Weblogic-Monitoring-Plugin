@@ -6,4 +6,4 @@ Monitoring is a proactive, not reactive, approach to system management. That is 
 
 This plugin allows you to gather metrics available in the Oracle WebLogic Console. In addition, it can also acquire the value of the oldest message in the JMS queue. The plugin collects system metric through auto discovery. This means no configuration is needed when adding or removing resources. 
 
-Find further information in the [dynatrace community](https://community.compuwareapm.com/community/display/DL/Weblogic+Monitoring+Plugin)
+Find further information in the [dynatrace community](https://community.dynatrace.com/community/display/DL/Weblogic+Monitoring+Plugin)
