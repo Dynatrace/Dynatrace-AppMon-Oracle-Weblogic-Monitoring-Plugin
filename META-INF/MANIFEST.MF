@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Require-Bundle: com.dynatrace.diagnostics.sdk
+Bundle-Vendor: dynaTrace 
+Bundle-ClassPath: .,lib/wlcipher.jar,lib/wlfullclient-10.3.3.0.jar
+Bundle-Version: 1.0.1
+Bundle-Name: Weblogic Monitoring
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.dynatrace.diagnostics.plugins.jmx;singleton:=
+ true
+
